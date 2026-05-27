@@ -3,8 +3,10 @@
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
-// 1. 异步获取 'blog' 内容集合里的所有文章
-const posts = await getCollection('blog');
+// 1. 异步获取 'blog' 内容集合里的所有文章，并过滤掉草稿（本地开发环境除外，方便预览）
+const posts = await getCollection('blog', ({ data }) => {
+  return import.meta.env.DEV ? true : data.draft !== true;
+});
 
 // 2. 按时间倒序排序（最新的在最上面）
 const sortedPosts = posts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
@@ -39,6 +41,7 @@ function formatDate(dateStr: string) {
               href={`/lucid-hubble/post/${post.id}`} 
               class="post-card" 
               style={`animation-delay: ${index * 0.15}s;`}
+              data-astro-prefetch
             >
               <div class="post-meta">
                 <time datetime={date}>{formatDate(date)}</time>

@@ -87,6 +87,18 @@ body {
   color: hsl(var(--fg));
 }
 
+/* 沉浸式极细顶部阅读进度条 */
+.read-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: hsl(var(--accent));
+  z-index: 9999;
+  transition: width 0.1s ease-out;
+}
+
 .container {
   max-width: var(--max-width);
   margin: 0 auto;
