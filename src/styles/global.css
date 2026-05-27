@@ -1,0 +1,476 @@
+/* -------------------------------------------------------------
+ * CORE DESIGN SYSTEM - ASTRO MINIMALIST BLOG (LUCID HUBBLE)
+ * ------------------------------------------------------------- */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+:root {
+  /* HSL Color Tokens - Light Palette (Soft Sand/Warm White) */
+  --bg: 36, 15%, 97%;          /* #f7f5f0 Warm White */
+  --fg: 0, 0%, 11%;            /* #1c1c1c Jet Black */
+  --fg-muted: 0, 0%, 40%;      /* #666666 Muted Gray */
+  --border: 36, 10%, 88%;      /* #e3dfd5 Fine Border Warm */
+  --accent: 24, 85%, 50%;      /* Rust Accent */
+  --code-bg: 36, 10%, 93%;     /* Code background */
+  
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-serif: 'Lora', Georgia, serif;
+  
+  --max-width: 700px;
+
+  /* Astro Code Shiki Highlight CSS Variables (Light Theme) */
+  --astro-code-foreground: hsl(var(--fg));
+  --astro-code-background: hsl(var(--code-bg));
+  --astro-code-token-constant: hsl(24, 85%, 40%);        /* Rust Constant */
+  --astro-code-token-string: hsl(135, 30%, 35%);          /* Muted Olive String */
+  --astro-code-token-comment: hsl(0, 0%, 55%);            /* Muted Grey Comment */
+  --astro-code-token-keyword: hsl(24, 85%, 40%);          /* Bold Rust Keyword */
+  --astro-code-token-parameter: hsl(0, 0%, 35%);
+  --astro-code-token-function: hsl(215, 60%, 40%);        /* Muted Blue Function */
+  --astro-code-token-string-expression: hsl(135, 30%, 35%);
+  --astro-code-token-punctuation: hsl(0, 0%, 45%);        /* Grey Punctuation */
+  --astro-code-token-operator: hsl(24, 85%, 40%);
+}
+
+[data-theme="dark"] {
+  /* HSL Color Tokens - Dark Palette (Deep Jet/Pitch Black) */
+  --bg: 0, 0%, 4%;             /* #0a0a0a Pure Pitch Black */
+  --fg: 0, 0%, 90%;            /* #e5e5e5 Cold Warm Gray */
+  --fg-muted: 0, 0%, 60%;      /* #999999 Cold Muted */
+  --border: 0, 0%, 15%;        /* #262626 Dark Border */
+  --accent: 20, 80%, 60%;      /* Bright Rust Accent */
+  --code-bg: 0, 0%, 9%;        /* Dark Code bg */
+
+  /* Astro Code Shiki Highlight CSS Variables (Dark Theme) */
+  --astro-code-foreground: hsl(var(--fg));
+  --astro-code-background: hsl(var(--code-bg));
+  --astro-code-token-constant: hsl(20, 80%, 65%);         /* Warm Orange Constant */
+  --astro-code-token-string: hsl(115, 35%, 65%);          /* Bright Olive String */
+  --astro-code-token-comment: hsl(0, 0%, 45%);            /* Dark Muted Grey Comment */
+  --astro-code-token-keyword: hsl(20, 80%, 65%);          /* Keyword Orange */
+  --astro-code-token-parameter: hsl(0, 0%, 75%);
+  --astro-code-token-function: hsl(210, 75%, 70%);        /* Sky Blue Function */
+  --astro-code-token-string-expression: hsl(115, 35%, 65%);
+  --astro-code-token-punctuation: hsl(0, 0%, 60%);        /* Light Punctuation */
+  --astro-code-token-operator: hsl(20, 80%, 65%);
+}
+
+/* -------------------------------------------------------------
+ * BASE & LAYOUT
+ * ------------------------------------------------------------- */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: hsl(var(--bg));
+  color: hsl(var(--fg));
+  line-height: 1.7;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+  padding: 0 1.5rem;
+}
+
+/* Base selection color */
+::selection {
+  background-color: hsla(var(--accent), 0.15);
+  color: hsl(var(--fg));
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* -------------------------------------------------------------
+ * HEADER & NAVIGATION
+ * ------------------------------------------------------------- */
+
+header {
+  padding: 3rem 0 2rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid hsl(var(--border));
+  margin-bottom: 3rem;
+}
+
+.logo {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 1.35rem;
+  color: hsl(var(--fg));
+  text-decoration: none;
+  letter-spacing: -0.02em;
+  transition: opacity 0.2s ease;
+}
+
+.logo:hover {
+  opacity: 0.8;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-links a {
+  color: hsl(var(--fg-muted));
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 400;
+  position: relative;
+  padding: 0.2rem 0;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: hsl(var(--fg));
+}
+
+/* Underline slide-in effect */
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: hsl(var(--accent));
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-links a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  color: hsl(var(--fg-muted));
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  color: hsl(var(--fg));
+  background-color: hsla(var(--fg), 0.05);
+}
+
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* -------------------------------------------------------------
+ * HERO SECTION
+ * ------------------------------------------------------------- */
+
+.hero {
+  margin-bottom: 4rem;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero h1 {
+  font-family: var(--font-serif);
+  font-size: 2.25rem;
+  line-height: 1.25;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  color: hsl(var(--fg-muted));
+  font-size: 1.05rem;
+  font-weight: 300;
+  max-width: 600px;
+}
+
+/* -------------------------------------------------------------
+ * POSTS LIST
+ * ------------------------------------------------------------- */
+
+.section-title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: hsl(var(--fg-muted));
+  margin-bottom: 2rem;
+  border-bottom: 1px solid hsl(var(--border));
+  padding-bottom: 0.5rem;
+}
+
+.posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  margin-bottom: 4rem;
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.post-card {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.post-meta {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  font-size: 0.85rem;
+  color: hsl(var(--fg-muted));
+}
+
+.post-meta .tag {
+  color: hsl(var(--accent));
+  font-weight: 500;
+}
+
+.post-card h2 {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  line-height: 1.3;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.post-card:hover h2 {
+  color: hsl(var(--accent));
+}
+
+.post-card p {
+  color: hsl(var(--fg-muted));
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* -------------------------------------------------------------
+ * POST DETAIL VIEW (TYPOGRAPHY SYSTEM)
+ * ------------------------------------------------------------- */
+
+.post-header {
+  margin-bottom: 3rem;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.post-header .back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: hsl(var(--fg-muted));
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.post-header .back-btn:hover {
+  color: hsl(var(--fg));
+  transform: translateX(-3px);
+}
+
+.post-header h1 {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  line-height: 1.2;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.015em;
+}
+
+.post-content {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: hsl(var(--fg));
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Markdown typography styling inside post content */
+.post-content p {
+  margin-bottom: 1.8rem;
+  font-weight: 400;
+}
+
+.post-content h2 {
+  font-family: var(--font-sans);
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin: 3rem 0 1.2rem 0;
+  letter-spacing: -0.01em;
+}
+
+.post-content h3 {
+  font-family: var(--font-sans);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 2.2rem 0 1rem 0;
+}
+
+.post-content ul, .post-content ol {
+  margin-bottom: 1.8rem;
+  padding-left: 1.5rem;
+}
+
+.post-content li {
+  margin-bottom: 0.6rem;
+}
+
+.post-content blockquote {
+  border-left: 2px solid hsl(var(--accent));
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+  font-style: italic;
+  color: hsl(var(--fg-muted));
+}
+
+/* -------------------------------------------------------------
+ * PREMIUM SHIKI CODE HIGHLIGHTING INTEGRATION
+ * ------------------------------------------------------------- */
+
+.post-content code {
+  font-family: Menlo, Monaco, Consolas, monospace;
+  font-size: 0.9rem;
+  background-color: hsl(var(--code-bg));
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  transition: background-color 0.4s ease;
+}
+
+/* Shiki pre block rendering */
+.post-content pre {
+  margin: 2rem 0;
+  padding: 1.2rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--code-bg)) !important;
+  color: hsl(var(--shiki-color-text)) !important;
+  transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
+.post-content pre code {
+  padding: 0;
+  background-color: transparent;
+  border-radius: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: inherit;
+}
+
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 2rem 0;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+}
+
+.post-content hr {
+  border: none;
+  height: 1px;
+  background-color: hsl(var(--border));
+  margin: 3rem 0;
+}
+
+/* -------------------------------------------------------------
+ * FOOTER
+ * ------------------------------------------------------------- */
+
+footer {
+  margin-top: auto;
+  padding: 4rem 0 3rem 0;
+  border-top: 1px solid hsl(var(--border));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: hsl(var(--fg-muted));
+}
+
+footer a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+footer a:hover {
+  color: hsl(var(--fg));
+}
+
+.footer-socials {
+  display: flex;
+  gap: 1.5rem;
+}
+
+/* -------------------------------------------------------------
+ * UTILITY & KEYFRAMES
+ * ------------------------------------------------------------- */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  body {
+    padding: 0 1rem;
+  }
+  header {
+    padding: 2rem 0 1.5rem 0;
+    margin-bottom: 2rem;
+  }
+  .hero h1 {
+    font-size: 1.85rem;
+  }
+  .post-header h1 {
+    font-size: 2rem;
+  }
+  .post-content {
+    font-size: 1rem;
+  }
+  footer {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+}

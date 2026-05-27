@@ -1,0 +1,143 @@
+---
+// Layout.astro - 极简杂志风全局母版
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "一个关于设计、前端工程与极简主义哲学的个人数字花园。手戳零构建，只记录纯粹的创作与思想。" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content={description}>
+  <meta name="keywords" content="极简博客, 个人数字花园, Astro博客, 极简设计, 静态博客">
+  <meta name="author" content="Lucid">
+  
+  <!-- Favicon (Fallback Emoji SVG) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
+  
+  <!-- 立即检测暗黑模式并设置，防止页面出现闪烁 (FOUC) -->
+  <script is:inline>
+    (function () {
+      const savedTheme = localStorage.getItem('theme');
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      
+      if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <a href="/" class="logo">Lucid Hubble.</a>
+      <nav class="nav-links">
+        <a href="/#blog">Writing</a>
+        <a href="/#about">About</a>
+        <!-- Dark Mode Toggle Button -->
+        <button id="theme-toggle" class="theme-toggle" aria-label="切换暗黑模式">
+          <!-- 图标将在客户端由 Lucide 动态渲染 -->
+          <i data-lucide="moon"></i>
+        </button>
+      </nav>
+    </header>
+
+    <!-- Main Dynamic Content Slot -->
+    <main>
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div>
+        &copy; 2026 Lucid Hubble. Powered by Astro &amp; Engineering Aesthetics.
+      </div>
+      <div class="footer-socials">
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <i data-lucide="github" style="width: 18px; height: 18px;"></i>
+        </a>
+        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+          <i data-lucide="twitter" style="width: 18px; height: 18px;"></i>
+        </a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Lucide Icons CDN (For crisp vector icons) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- 客户端主题切换绑定与 Lucide 图标初始化逻辑 -->
+  <script>
+    // 在客户端初始化 Lucide 图标
+    function initIcons() {
+      if ((window as any).lucide) {
+        (window as any).lucide.createIcons();
+      }
+    }
+
+    // 更新按钮状态图标
+    function updateToggleIcon() {
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      if (!themeToggleBtn) return;
+
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      
+      if (currentTheme === 'dark') {
+        themeToggleBtn.innerHTML = '<i data-lucide="sun"></i>';
+        themeToggleBtn.setAttribute('aria-label', '切换至亮色模式');
+      } else {
+        themeToggleBtn.innerHTML = '<i data-lucide="moon"></i>';
+        themeToggleBtn.setAttribute('aria-label', '切换至暗色模式');
+      }
+
+      initIcons();
+    }
+
+    // 绑定事件与初始化
+    function initThemeToggle() {
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      if (themeToggleBtn) {
+        // 先移除可能残留的旧绑定，再重新绑定，避免 Astro 路由局部刷新导致多次绑定
+        themeToggleBtn.removeEventListener('click', handleToggle);
+        themeToggleBtn.addEventListener('click', handleToggle);
+      }
+      updateToggleIcon();
+    }
+
+    function handleToggle() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      
+      updateToggleIcon();
+    }
+
+    // 客户端初始运行
+    window.addEventListener('DOMContentLoaded', () => {
+      initIcons();
+      initThemeToggle();
+    });
+
+    // 适配一些静态托管平台或后续可能的 SPA 转场机制
+    document.addEventListener('astro:after-swap', () => {
+      initIcons();
+      initThemeToggle();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+---
+// [slug].astro - 动态文章编译详情页
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+// 1. Astro 必须的前置定义，声明所有可能生成的静态 URL 路径
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+// 2. 从参数和 props 中获取当前页面对应的文章数据
+const { post } = Astro.props;
+const { title, date, description, tags = [] } = post.data;
+
+// 3. 将 Markdown 静态渲染编译为可在 Astro 中直接嵌套使用的组件
+const { Content } = await render(post);
+
+// 4. 辅助函数：格式化英文杂志日期
+function formatDate(dateStr: string) {
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  const dateObj = new Date(dateStr);
+  return dateObj.toLocaleDateString('en-US', options);
+}
+---
+
+<Layout title={`${title} - Lucid Hubble`} description={description}>
+  <article>
+    <!-- 文章头部 -->
+    <div class="post-header">
+      <!-- 返回主页按钮 -->
+      <a href="/" class="back-btn">
+        <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Back to writings
+      </a>
+      
+      <!-- 主标题 -->
+      <h1>{title}</h1>
+      
+      <!-- 元信息 -->
+      <div class="post-meta" style="font-size: 0.9rem;">
+        <time datetime={date}>{formatDate(date)}</time>
+        {tags.length > 0 && (
+          <>
+            <span>•</span>
+            <div style="display: inline-flex; gap: 0.5rem;">
+              {tags.map(tag => (
+                <span class="tag">#{tag}</span>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+
+    <!-- 静态编译生成的 HTML 博客正文 -->
+    <div class="post-content">
+      <Content />
+    </div>
+  </article>
+</Layout>

@@ -1,0 +1,75 @@
+---
+// index.astro - 博客主页
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+// 1. 异步获取 'blog' 内容集合里的所有文章
+const posts = await getCollection('blog');
+
+// 2. 按时间倒序排序（最新的在最上面）
+const sortedPosts = posts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+// 3. 辅助函数：格式化英文杂志日期
+function formatDate(dateStr: string) {
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  const dateObj = new Date(dateStr);
+  return dateObj.toLocaleDateString('en-US', options);
+}
+---
+
+<Layout title="Lucid Hubble - 极简主义数字花园">
+  <!-- Hero / 简介 -->
+  <section class="hero">
+    <h1>思考的厚度，<br>藏在极简的设计与纯粹的文字中。</h1>
+    <p>欢迎来到我的数字花园。这里没有喧嚣的算法推荐与杂乱的广告，只有独立写作的宁静与关于前端工程、极简设计及科技人文的纯粹文字记录。</p>
+  </section>
+
+  <!-- 博客文章列表 -->
+  <section id="blog">
+    <h3 class="section-title">RECENT WRITINGS</h3>
+    <div id="posts-list" class="posts-list">
+      {sortedPosts.length === 0 ? (
+        <p style="color: hsl(var(--fg-muted));">目前还没有发布任何文章。</p>
+      ) : (
+        sortedPosts.map((post, index) => {
+          const { title, date, description, tags = [] } = post.data;
+          
+          return (
+            <a 
+              href={`/post/${post.id}`} 
+              class="post-card" 
+              style={`animation-delay: ${index * 0.15}s;`}
+            >
+              <div class="post-meta">
+                <time datetime={date}>{formatDate(date)}</time>
+                {tags.length > 0 && (
+                  <>
+                    <span>•</span>
+                    {tags.map(tag => (
+                      <span class="tag">#{tag}</span>
+                    ))}
+                  </>
+                )}
+              </div>
+              <h2>{title}</h2>
+              <p>{description}</p>
+            </a>
+          );
+        })
+      )}
+    </div>
+  </section>
+
+  <!-- 关于我 -->
+  <section id="about" style="margin-bottom: 5rem; animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1);">
+    <h3 class="section-title">ABOUT ME</h3>
+    <div style="font-family: var(--font-serif); font-size: 1.05rem; line-height: 1.8; color: hsl(var(--fg));">
+      <p style="margin-bottom: 1.5rem;">
+        我是 <strong>Lucid</strong>，一名倡导极简主义的前端工程师与数字花匠。我相信代码与文字一样，应该充满对秩序的向往和温润的生命力。
+      </p>
+      <p>
+        这个博客现在是由 <strong>Astro</strong> 极简框架驱动的。通过静态编译，我们在编译期就把 Markdown 翻译成了纯净的 HTML，客户端不仅**零 JavaScript 负担**，还拥有了完美的静态 SEO 和闪电般的加载速度。
+      </p>
+    </div>
+  </section>
+</Layout>

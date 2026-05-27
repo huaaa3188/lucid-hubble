@@ -1,0 +1,14 @@
+{
+  "name": "lucid-hubble-astro",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev --port 8000",
+    "start": "astro dev --port 8000",
+    "build": "astro build",
+    "preview": "astro preview --port 8000"
+  },
+  "dependencies": {
+    "astro": "^6.3.8"
+  }
+}
