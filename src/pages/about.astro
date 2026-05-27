@@ -1,0 +1,61 @@
+---
+// about.astro - 独立的关于我页面
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="About - Lucid Hubble" description="关于 Lucid：一名倡导极简主义的前端工程师与数字花匠。">
+  <article class="about-container" style="animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);">
+    <!-- 返回主页 -->
+    <a href="/lucid-hubble/" class="back-btn" style="margin-bottom: 2.5rem; display: inline-flex; align-items: center; gap: 0.5rem;">
+      <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Back to writings
+    </a>
+
+    <!-- 顶部大标题与人文意境 -->
+    <header class="about-header" style="margin-bottom: 3.5rem;">
+      <h1 style="font-family: var(--font-sans); font-size: 2.5rem; font-weight: 300; letter-spacing: -0.03em; margin-bottom: 1rem; color: hsl(var(--fg));">
+        ABOUT ME
+      </h1>
+      <p style="font-family: var(--font-serif); font-style: italic; font-size: 1.15rem; color: hsl(var(--accent)); line-height: 1.6;">
+        “秩序的向往，与温润的生命力。”
+      </p>
+    </header>
+
+    <!-- 核心介绍正文 -->
+    <section class="about-content" style="font-family: var(--font-serif); font-size: 1.05rem; line-height: 1.85; color: hsl(var(--fg));">
+      <p style="margin-bottom: 1.8rem;">
+        我是 <strong>Lucid</strong>，一名倡导极简主义的前端工程师与数字花匠。
+      </p>
+      
+      <p style="margin-bottom: 1.8rem;">
+        在这个信息洪流喧嚣、算法推荐无孔不入的时代，我更愿意退回一隅，精心打理这片小小的数字花园。我相信代码与文字一样，应该充满对秩序的向往。一行干净的函数，与一段经过深思熟虑的文字，在本质上具有相同的人文美感。
+      </p>
+
+      <p style="margin-bottom: 3.5rem;">
+        这个博客现在完全由 <strong>Astro</strong> 极简框架强力驱动。我们通过极致的静态编译，在构建期就将所有 Markdown 翻译成了纯净的 HTML 骨架。在客户端，它拥有**近乎零的客户端 JavaScript 负担**，不仅带来了完美的 SEO 抓取表现，更拥有了闪电般、无感顿挫的瞬时加载性能。
+      </p>
+    </section>
+
+    <!-- 维度划分：极客与花匠 -->
+    <section class="dimensions" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; border-top: 1px dashed hsl(var(--border)); padding-top: 3rem; margin-bottom: 5rem;">
+      <div class="dimension-card">
+        <h3 style="font-family: var(--font-sans); font-size: 1.1rem; letter-spacing: 0.05em; font-weight: 600; color: hsl(var(--fg)); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i data-lucide="code" style="width: 18px; height: 18px; color: hsl(var(--accent));"></i>
+          AS AN ENGINEER
+        </h3>
+        <p style="font-size: 0.95rem; line-height: 1.7; color: hsl(var(--fg-muted));">
+          热衷于极致的性能调优与外科手术般干净的代码架构。崇尚纯原生 CSS 布局灵活性与现代静态构架的巧妙结合，讨厌过度设计和不必要的重构。
+        </p>
+      </div>
+
+      <div class="dimension-card">
+        <h3 style="font-family: var(--font-sans); font-size: 1.1rem; letter-spacing: 0.05em; font-weight: 600; color: hsl(var(--fg)); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i data-lucide="sprout" style="width: 18px; height: 18px; color: hsl(var(--accent));"></i>
+          AS A GARDENER
+        </h3>
+        <p style="font-size: 0.95rem; line-height: 1.7; color: hsl(var(--fg-muted));">
+          相信知识的积累应该像培育植被。每一篇随笔、每一个前端组件，都是一颗种子，在岁月的迭代中默默扎根、萌芽，最终在数字荒漠中长出一片沉静的绿洲。
+        </p>
+      </div>
+    </section>
+  </article>
+</Layout>
