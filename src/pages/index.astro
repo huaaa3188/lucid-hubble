@@ -29,6 +29,13 @@ function formatDate(dateStr: string) {
   <!-- 博客文章列表 -->
   <section id="blog">
     <h3 class="section-title">RECENT WRITINGS</h3>
+    
+    <!-- 极简标签过滤提示条 -->
+    <div id="filter-bar" class="filter-bar" style="display: none;">
+      <span>正在检索分类: <strong id="active-tag"></strong></span>
+      <button id="clear-filter" class="clear-btn">清除检索</button>
+    </div>
+
     <div id="posts-list" class="posts-list">
       {sortedPosts.length === 0 ? (
         <p style="color: hsl(var(--fg-muted));">目前还没有发布任何文章。</p>
@@ -41,6 +48,7 @@ function formatDate(dateStr: string) {
               href={`/lucid-hubble/post/${post.id}`} 
               class="post-card" 
               style={`animation-delay: ${index * 0.15}s;`}
+              data-tags={tags.join(',')}
               data-astro-prefetch
             >
               <div class="post-meta">
@@ -49,7 +57,7 @@ function formatDate(dateStr: string) {
                   <>
                     <span>•</span>
                     {tags.map(tag => (
-                      <span class="tag">#{tag}</span>
+                      <span class="tag-btn" data-tag={tag}>#{tag}</span>
                     ))}
                   </>
                 )}
@@ -76,3 +84,73 @@ function formatDate(dateStr: string) {
     </div>
   </section>
 </Layout>
+
+<script>
+  function initTagFilter() {
+    const postsList = document.getElementById('posts-list');
+    if (!postsList) return; // 不在主页则直接退出
+
+    const filterBar = document.getElementById('filter-bar');
+    const activeTagEl = document.getElementById('active-tag');
+    const clearFilterBtn = document.getElementById('clear-filter');
+    const postCards = document.querySelectorAll('.post-card');
+    const tagBtns = document.querySelectorAll('.tag-btn');
+
+    let currentTag = '';
+
+    function filterTag(tag: string) {
+      currentTag = tag;
+      
+      if (!tag) {
+        // 清除筛选
+        if (filterBar) filterBar.style.display = 'none';
+        postCards.forEach(card => {
+          (card as HTMLElement).style.display = 'block';
+          (card as HTMLElement).style.opacity = '1';
+          (card as HTMLElement).style.transform = 'translateY(0)';
+        });
+        return;
+      }
+
+      // 显示筛选条
+      if (filterBar) filterBar.style.display = 'flex';
+      if (activeTagEl) activeTagEl.textContent = `#${tag}`;
+
+      postCards.forEach(card => {
+        const tagsAttr = card.getAttribute('data-tags') || '';
+        const tagsList = tagsAttr.split(',');
+        if (tagsList.includes(tag)) {
+          (card as HTMLElement).style.display = 'block';
+          (card as HTMLElement).style.opacity = '1';
+          (card as HTMLElement).style.transform = 'translateY(0)';
+        } else {
+          (card as HTMLElement).style.display = 'none';
+          (card as HTMLElement).style.opacity = '0';
+        }
+      });
+    }
+
+    // 绑定事件
+    tagBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        // 关键：阻止冒泡与超链接默认跳转行为
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const tag = btn.getAttribute('data-tag') || '';
+        filterTag(tag);
+      });
+    });
+
+    if (clearFilterBtn) {
+      clearFilterBtn.addEventListener('click', () => {
+        filterTag('');
+      });
+    }
+  }
+
+  // 绑定 Astro 路由生命周期，完美支持 View Transitions
+  document.addEventListener('astro:page-load', () => {
+    initTagFilter();
+  });
+</script>

@@ -260,9 +260,56 @@ header {
   color: hsl(var(--fg-muted));
 }
 
-.post-meta .tag {
+.post-meta .tag,
+.post-meta .tag-btn {
   color: hsl(var(--accent));
   font-weight: 500;
+  transition: all 0.2s ease;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  background: transparent;
+  display: inline-block;
+}
+
+.post-meta .tag-btn:hover {
+  background: hsla(var(--accent), 0.1);
+  cursor: pointer;
+}
+
+/* 主页标签过滤提示栏 */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: hsla(var(--accent), 0.05);
+  border: 1px dashed hsla(var(--accent), 0.25);
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+  color: hsl(var(--fg));
+  animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.filter-bar strong {
+  color: hsl(var(--accent));
+}
+
+.clear-btn {
+  background: hsl(var(--fg));
+  color: hsl(var(--bg));
+  border: none;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.8rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.clear-btn:hover {
+  opacity: 0.9;
 }
 
 .post-card h2 {
