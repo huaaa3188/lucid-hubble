@@ -87,6 +87,12 @@ body {
   color: hsl(var(--fg));
 }
 
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid hsla(var(--accent), 0.55);
+  outline-offset: 4px;
+}
+
 /* 沉浸式极细顶部阅读进度条 */
 .read-progress {
   position: fixed;
@@ -154,6 +160,11 @@ body {
   color: hsl(var(--fg));
 }
 
+.site-header .nav-links a.is-active,
+.site-header .nav-links a[aria-current] {
+  color: hsl(var(--fg));
+}
+
 /* Underline slide-in effect */
 .site-header .nav-links a::after {
   content: '';
@@ -169,6 +180,12 @@ body {
 }
 
 .site-header .nav-links a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.site-header .nav-links a.is-active::after,
+.site-header .nav-links a[aria-current]::after {
   transform: scaleX(1);
   transform-origin: left;
 }

@@ -31,7 +31,7 @@ function formatDate(date: Date) {
 }
 ---
 
-<Layout title={`${title} - Lucid Hubble`} description={description} canonicalUrl={postUrl}>
+<Layout title={`${title} - Lucid Hubble`} description={description} canonicalUrl={postUrl} ogType="article" publishedTime={date.toISOString()}>
   <article>
     <!-- 文章头部 -->
     <div class="post-header">

@@ -7,12 +7,16 @@ interface Props {
   title: string;
   description?: string;
   canonicalUrl?: string;
+  ogType?: "website" | "article";
+  publishedTime?: string;
 }
 
 const {
   title,
   description = "一个关于设计、服务端工程与极简主义哲学的个人数字花园。只记录纯粹的创作与思想。",
-  canonicalUrl: canonicalUrlProp
+  canonicalUrl: canonicalUrlProp,
+  ogType = "website",
+  publishedTime
 } = Astro.props;
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 const homeUrl = `${basePath}/`;
@@ -21,6 +25,9 @@ const aboutUrl = `${basePath}/about/`;
 const pagePath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const canonicalPath = pagePath.startsWith(homeUrl) ? pagePath : `${basePath}${pagePath}`;
 const canonicalUrl = canonicalUrlProp ?? new URL(canonicalPath, Astro.site ?? Astro.url).toString();
+const isAboutPage = canonicalPath.startsWith(aboutUrl);
+const isWritingPage = !isAboutPage;
+const githubUrl = "https://github.com/Huaaa3188";
 ---
 
 <!DOCTYPE html>
@@ -38,6 +45,13 @@ const canonicalUrl = canonicalUrlProp ?? new URL(canonicalPath, Astro.site ?? As
   <meta name="keywords" content="极简博客, 个人数字花园, Astro博客, 极简设计, 静态博客">
   <meta name="author" content="Lucid">
   <link rel="canonical" href={canonicalUrl}>
+  <meta property="og:site_name" content="Lucid Hubble">
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:url" content={canonicalUrl}>
+  <meta property="og:type" content={ogType}>
+  {publishedTime && <meta property="article:published_time" content={publishedTime}>}
+  <meta name="twitter:card" content="summary">
   
   <!-- Favicon (Fallback Emoji SVG) -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
@@ -69,8 +83,8 @@ const canonicalUrl = canonicalUrlProp ?? new URL(canonicalPath, Astro.site ?? As
     <header class="site-header">
       <a href={homeUrl} class="logo">Lucid Hubble.</a>
       <nav class="nav-links">
-        <a href={writingUrl}>Writing</a>
-        <a href={aboutUrl} data-astro-prefetch>About</a>
+        <a href={writingUrl} class={isWritingPage ? 'is-active' : undefined} aria-current={isWritingPage ? 'location' : undefined}>Writing</a>
+        <a href={aboutUrl} class={isAboutPage ? 'is-active' : undefined} aria-current={isAboutPage ? 'page' : undefined} data-astro-prefetch>About</a>
         <!-- Dark Mode Toggle Button -->
         <button id="theme-toggle" class="theme-toggle" aria-label="切换暗黑模式">
           <!-- 图标将在客户端由 Lucide 动态渲染 -->
@@ -87,21 +101,18 @@ const canonicalUrl = canonicalUrlProp ?? new URL(canonicalPath, Astro.site ?? As
     <!-- Footer -->
     <footer class="site-footer">
       <div>
-        &copy; 2026 Lucid Hubble. Powered by Astro &amp; Engineering Aesthetics.
+        &copy; 2026 Lucid Hubble. 记录工程、设计与日常思考。
       </div>
       <div class="footer-socials">
-        <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+        <a href={githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
           <i data-lucide="github" style="width: 18px; height: 18px;"></i>
-        </a>
-        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-          <i data-lucide="twitter" style="width: 18px; height: 18px;"></i>
         </a>
       </div>
     </footer>
   </div>
 
   <!-- Lucide Icons CDN (For crisp vector icons) -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script is:inline src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
 
   <!-- 客户端主题切换绑定与 Lucide 图标初始化逻辑 -->
   <script>
