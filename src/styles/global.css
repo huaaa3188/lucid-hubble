@@ -460,6 +460,29 @@ header {
   margin: 3rem 0;
 }
 
+.post-copyright {
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed hsl(var(--border));
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: hsl(var(--fg-muted));
+}
+
+.post-copyright p {
+  margin-bottom: 0.5rem;
+}
+
+.post-copyright a {
+  color: hsl(var(--accent));
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.post-copyright a:hover {
+  text-decoration: underline;
+}
+
 /* -------------------------------------------------------------
  * FOOTER
  * ------------------------------------------------------------- */

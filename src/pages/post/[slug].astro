@@ -5,7 +5,9 @@ import Layout from '../../layouts/Layout.astro';
 
 // 1. Astro 必须的前置定义，声明所有可能生成的静态 URL 路径
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = await getCollection('blog', ({ data }) => {
+    return import.meta.env.DEV ? true : data.draft !== true;
+  });
   return posts.map(post => ({
     params: { slug: post.id },
     props: { post },
@@ -15,24 +17,26 @@ export async function getStaticPaths() {
 // 2. 从参数和 props 中获取当前页面对应的文章数据
 const { post } = Astro.props;
 const { title, date, description, tags = [] } = post.data;
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+const homeUrl = `${basePath}/`;
+const postUrl = new URL(`${basePath}/post/${post.id}/`, Astro.site ?? Astro.url).toString();
 
 // 3. 将 Markdown 静态渲染编译为可在 Astro 中直接嵌套使用的组件
 const { Content } = await render(post);
 
 // 4. 辅助函数：格式化英文杂志日期
-function formatDate(dateStr: string) {
+function formatDate(date: Date) {
   const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-  const dateObj = new Date(dateStr);
-  return dateObj.toLocaleDateString('en-US', options);
+  return date.toLocaleDateString('en-US', options);
 }
 ---
 
-<Layout title={`${title} - Lucid Hubble`} description={description}>
+<Layout title={`${title} - Lucid Hubble`} description={description} canonicalUrl={postUrl}>
   <article>
     <!-- 文章头部 -->
     <div class="post-header">
       <!-- 返回主页按钮 -->
-      <a href="/lucid-hubble/" class="back-btn">
+      <a href={homeUrl} class="back-btn">
         <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Back to writings
       </a>
       
@@ -41,7 +45,7 @@ function formatDate(dateStr: string) {
       
       <!-- 元信息 -->
       <div class="post-meta" style="font-size: 0.9rem;">
-        <time datetime={date}>{formatDate(date)}</time>
+        <time datetime={date.toISOString()}>{formatDate(date)}</time>
         {tags.length > 0 && (
           <>
             <span>•</span>
@@ -59,5 +63,11 @@ function formatDate(dateStr: string) {
     <div class="post-content">
       <Content />
     </div>
+
+    <footer class="post-copyright" aria-label="文章版权信息">
+      <p>本文作者：Lucid</p>
+      <p>原文链接：<a href={postUrl}>{postUrl}</a></p>
+      <p>未经许可，禁止转载或镜像全文；引用请注明出处。</p>
+    </footer>
   </article>
 </Layout>
