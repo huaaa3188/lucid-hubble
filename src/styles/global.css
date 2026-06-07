@@ -487,7 +487,7 @@ header {
  * FOOTER
  * ------------------------------------------------------------- */
 
-footer {
+.site-footer {
   margin-top: auto;
   padding: 4rem 0 3rem 0;
   border-top: 1px solid hsl(var(--border));
@@ -498,13 +498,13 @@ footer {
   color: hsl(var(--fg-muted));
 }
 
-footer a {
+.site-footer a {
   color: inherit;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
-footer a:hover {
+.site-footer a:hover {
   color: hsl(var(--fg));
 }
 
