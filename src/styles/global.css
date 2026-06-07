@@ -111,7 +111,7 @@ body {
  * HEADER & NAVIGATION
  * ------------------------------------------------------------- */
 
-header {
+.site-header {
   padding: 3rem 0 2rem 0;
   display: flex;
   justify-content: space-between;
@@ -120,7 +120,7 @@ header {
   margin-bottom: 3rem;
 }
 
-.logo {
+.site-header .logo {
   font-family: var(--font-serif);
   font-weight: 600;
   font-size: 1.35rem;
@@ -130,17 +130,17 @@ header {
   transition: opacity 0.2s ease;
 }
 
-.logo:hover {
+.site-header .logo:hover {
   opacity: 0.8;
 }
 
-.nav-links {
+.site-header .nav-links {
   display: flex;
   align-items: center;
   gap: 1.5rem;
 }
 
-.nav-links a {
+.site-header .nav-links a {
   color: hsl(var(--fg-muted));
   text-decoration: none;
   font-size: 0.95rem;
@@ -150,12 +150,12 @@ header {
   transition: color 0.2s ease;
 }
 
-.nav-links a:hover {
+.site-header .nav-links a:hover {
   color: hsl(var(--fg));
 }
 
 /* Underline slide-in effect */
-.nav-links a::after {
+.site-header .nav-links a::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -168,7 +168,7 @@ header {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.nav-links a:hover::after {
+.site-header .nav-links a:hover::after {
   transform: scaleX(1);
   transform-origin: left;
 }
@@ -537,7 +537,7 @@ header {
   body {
     padding: 0 1rem;
   }
-  header {
+  .site-header {
     padding: 2rem 0 1.5rem 0;
     margin-bottom: 2rem;
   }
