@@ -358,11 +358,12 @@ header {
 
 .post-header h1 {
   font-family: var(--font-serif);
-  font-size: 2.5rem;
-  line-height: 1.2;
+  font-size: clamp(1.8rem, 6vw, 2.5rem);
+  line-height: 1.25;
   font-weight: 500;
   margin-bottom: 1.5rem;
   letter-spacing: -0.015em;
+  text-wrap: balance;
 }
 
 .post-content {
@@ -545,12 +546,12 @@ header {
     font-size: 1.85rem;
   }
   .post-header h1 {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
   .post-content {
     font-size: 1rem;
   }
-  footer {
+  .site-footer {
     flex-direction: column;
     gap: 1rem;
     align-items: flex-start;
