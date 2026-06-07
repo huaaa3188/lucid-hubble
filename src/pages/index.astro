@@ -32,40 +32,41 @@ function formatDate(date: Date) {
     <h3 class="section-title">RECENT WRITINGS</h3>
     
     <!-- 极简标签过滤提示条 -->
-    <div id="filter-bar" class="filter-bar" style="display: none;">
+    <div id="filter-bar" class="filter-bar hidden">
       <span>正在检索分类: <strong id="active-tag"></strong></span>
       <button id="clear-filter" class="clear-btn">清除检索</button>
     </div>
 
     <div id="posts-list" class="posts-list">
       {sortedPosts.length === 0 ? (
-        <p style="color: hsl(var(--fg-muted));">目前还没有发布任何文章。</p>
+        <p class="empty-state">目前还没有发布任何文章。</p>
       ) : (
-        sortedPosts.map((post, index) => {
+        sortedPosts.map((post) => {
           const { title, date, description, tags = [] } = post.data;
           
           return (
-            <a 
-              href={`${basePath}/post/${post.id}/`}
+            <article
               class="post-card" 
-              style={`animation-delay: ${index * 0.15}s;`}
               data-tags={tags.join(',')}
-              data-astro-prefetch
             >
               <div class="post-meta">
                 <time datetime={date.toISOString()}>{formatDate(date)}</time>
                 {tags.length > 0 && (
                   <>
                     <span>•</span>
-                    {tags.map(tag => (
-                      <span class="tag-btn" data-tag={tag}>#{tag}</span>
-                    ))}
+                    <div class="tag-list">
+                      {tags.map(tag => (
+                        <button type="button" class="tag-btn" data-tag={tag} aria-label={`按标签 ${tag} 筛选文章`}>#{tag}</button>
+                      ))}
+                    </div>
                   </>
                 )}
               </div>
-              <h2>{title}</h2>
-              <p>{description}</p>
-            </a>
+              <a href={`${basePath}/post/${post.id}/`} class="post-card-link" data-astro-prefetch>
+                <h2>{title}</h2>
+                <p>{description}</p>
+              </a>
+            </article>
           );
         })
       )}
@@ -76,66 +77,45 @@ function formatDate(date: Date) {
 
 <script>
   function initTagFilter() {
-    const postsList = document.getElementById('posts-list');
-    if (!postsList) return; // 不在主页则直接退出
+    const blogSection = document.getElementById('blog');
+    if (!blogSection || blogSection.dataset.filterReady === 'true') return;
+    blogSection.dataset.filterReady = 'true';
 
     const filterBar = document.getElementById('filter-bar');
     const activeTagEl = document.getElementById('active-tag');
     const clearFilterBtn = document.getElementById('clear-filter');
     const postCards = document.querySelectorAll('.post-card');
-    const tagBtns = document.querySelectorAll('.tag-btn');
-
-    let currentTag = '';
 
     function filterTag(tag: string) {
-      currentTag = tag;
-      
       if (!tag) {
-        // 清除筛选
-        if (filterBar) filterBar.style.display = 'none';
+        filterBar?.classList.add('hidden');
         postCards.forEach(card => {
-          (card as HTMLElement).style.display = 'block';
-          (card as HTMLElement).style.opacity = '1';
-          (card as HTMLElement).style.transform = 'translateY(0)';
+          card.classList.remove('is-filtered-out');
         });
         return;
       }
 
-      // 显示筛选条
-      if (filterBar) filterBar.style.display = 'flex';
+      filterBar?.classList.remove('hidden');
       if (activeTagEl) activeTagEl.textContent = `#${tag}`;
 
       postCards.forEach(card => {
         const tagsAttr = card.getAttribute('data-tags') || '';
         const tagsList = tagsAttr.split(',');
-        if (tagsList.includes(tag)) {
-          (card as HTMLElement).style.display = 'block';
-          (card as HTMLElement).style.opacity = '1';
-          (card as HTMLElement).style.transform = 'translateY(0)';
-        } else {
-          (card as HTMLElement).style.display = 'none';
-          (card as HTMLElement).style.opacity = '0';
-        }
+        card.classList.toggle('is-filtered-out', !tagsList.includes(tag));
       });
     }
 
-    // 绑定事件
-    tagBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        // 关键：阻止冒泡与超链接默认跳转行为
-        e.preventDefault();
-        e.stopPropagation();
-        
-        const tag = btn.getAttribute('data-tag') || '';
+    blogSection.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement | null;
+      const tagBtn = target?.closest('.tag-btn') as HTMLButtonElement | null;
+
+      if (tagBtn) {
+        const tag = tagBtn.getAttribute('data-tag') || '';
         filterTag(tag);
-      });
+      }
     });
 
-    if (clearFilterBtn) {
-      clearFilterBtn.addEventListener('click', () => {
-        filterTag('');
-      });
-    }
+    clearFilterBtn?.addEventListener('click', () => filterTag(''));
   }
 
   // 绑定 Astro 路由生命周期，完美支持 View Transitions

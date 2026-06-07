@@ -2,6 +2,7 @@
 // Layout.astro - 极简杂志风全局母版
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
+import { getSiteUrl } from '../lib/site';
 
 interface Props {
   title: string;
@@ -9,6 +10,7 @@ interface Props {
   canonicalUrl?: string;
   ogType?: "website" | "article";
   publishedTime?: string;
+  structuredData?: Record<string, unknown>;
 }
 
 const {
@@ -16,7 +18,8 @@ const {
   description = "一个关于设计、服务端工程与极简主义哲学的个人数字花园。只记录纯粹的创作与思想。",
   canonicalUrl: canonicalUrlProp,
   ogType = "website",
-  publishedTime
+  publishedTime,
+  structuredData
 } = Astro.props;
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 const homeUrl = `${basePath}/`;
@@ -28,6 +31,8 @@ const canonicalUrl = canonicalUrlProp ?? new URL(canonicalPath, Astro.site ?? As
 const isAboutPage = canonicalPath.startsWith(aboutUrl);
 const isWritingPage = !isAboutPage;
 const githubUrl = "https://github.com/Huaaa3188";
+const rssUrl = getSiteUrl('rss.xml');
+const jsonLd = structuredData ? JSON.stringify(structuredData).replace(/</g, '\\u003c') : undefined;
 ---
 
 <!DOCTYPE html>
@@ -52,6 +57,8 @@ const githubUrl = "https://github.com/Huaaa3188";
   <meta property="og:type" content={ogType}>
   {publishedTime && <meta property="article:published_time" content={publishedTime}>}
   <meta name="twitter:card" content="summary">
+  <link rel="alternate" type="application/rss+xml" title="Lucid Hubble" href={rssUrl}>
+  {jsonLd && <script type="application/ld+json" set:html={jsonLd}></script>}
   
   <!-- Favicon (Fallback Emoji SVG) -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
@@ -105,7 +112,7 @@ const githubUrl = "https://github.com/Huaaa3188";
       </div>
       <div class="footer-socials">
         <a href={githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <i data-lucide="github" style="width: 18px; height: 18px;"></i>
+          <i data-lucide="github" class="footer-icon"></i>
         </a>
       </div>
     </footer>
