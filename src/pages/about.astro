@@ -1,18 +1,10 @@
 ---
 // about.astro - 独立的关于我页面
 import Layout from '../layouts/Layout.astro';
-
-const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
-const homeUrl = `${basePath}/`;
 ---
 
 <Layout title="About - Lucid Hubble" description="关于 Lucid：一名倡导极简主义的服务端开发工程师与数字花匠。">
   <article class="about-container">
-    <!-- 返回主页 -->
-    <a href={homeUrl} class="back-btn">
-      <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Back to writings
-    </a>
-
     <!-- 顶部大标题与人文意境 -->
     <header class="about-header">
       <h1>关于 Lucid</h1>

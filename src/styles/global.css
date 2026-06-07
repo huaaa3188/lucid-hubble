@@ -345,14 +345,14 @@ body {
   gap: 0.5rem;
   color: hsl(var(--fg-muted));
   text-decoration: none;
-  font-size: 0.9rem;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
   margin-bottom: 2rem;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 .post-header .back-btn:hover {
   color: hsl(var(--fg));
-  transform: translateX(-3px);
 }
 
 .post-header h1 {
@@ -565,13 +565,6 @@ body {
  * ------------------------------------------------------------- */
 .about-container {
   animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.about-container .back-btn {
-  margin-bottom: 2.5rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
 }
 
 .about-header {
