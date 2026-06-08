@@ -8,6 +8,7 @@
     "build": "astro build",
     "preview": "astro preview --port 8000",
     "check:dist": "node scripts/check-dist.mjs",
+    "new:post": "node scripts/new-post.mjs",
     "verify": "npm run build && npm run check:dist"
   },
   "dependencies": {
