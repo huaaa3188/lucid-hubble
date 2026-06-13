@@ -61,7 +61,7 @@ const jsonLd = structuredData ? JSON.stringify(structuredData).replace(/</g, '\\
   {jsonLd && <script type="application/ld+json" set:html={jsonLd}></script>}
   
   <!-- Favicon (Fallback Emoji SVG) -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><style>text{fill:%231c1c1c}@media(prefers-color-scheme:dark){text{fill:%23e5e5e5}}</style><text x=%2250%%22 y=%2255%%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2290%22 font-family=%22Georgia, serif%22 font-weight=%22bold%22>L</text></svg>">
   
   <!-- 立即检测暗黑模式并设置，防止页面出现闪烁 (FOUC) -->
   <script is:inline>
