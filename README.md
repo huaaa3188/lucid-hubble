@@ -1,6 +1,6 @@
 # Lucid Hubble
 
-一个基于 Astro 6 的静态个人博客 / 数字花园。内容由 Markdown 驱动，构建产物部署到 GitHub Pages：
+一个基于 Astro 6 的静态个人博客。内容由 Markdown 管理，构建产物通过 GitHub Actions 发布到 GitHub Pages：
 [https://Huaaa3188.github.io/lucid-hubble/](https://Huaaa3188.github.io/lucid-hubble/)
 
 当前正式 canonical 仍指向 GitHub Pages 子路径。如果以后迁到自定义域名，需要同步更新 `astro.config.mjs` 和 `scripts/check-dist.mjs`。
@@ -124,7 +124,7 @@ npm run verify
 
 ## 部署
 
-仓库通过 GitHub Actions 部署到 GitHub Pages。推送到 `main` 分支后，`.github/workflows/deploy.yml` 会使用 `withastro/action@v3` 构建并发布。
+仓库通过 GitHub Actions 部署到 GitHub Pages。推送到 `main` 分支后，`.github/workflows/deploy.yml` 会安装依赖、运行 `npm run verify`，然后把 `dist/` 上传为 Pages artifact 并发布。
 
 当前 `astro.config.mjs`：
 

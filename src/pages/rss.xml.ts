@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { escapeXml, getPublishedPosts, getSiteUrl } from '../lib/site';
 
 const siteTitle = 'Lucid Hubble';
-const siteDescription = '一个关于设计、服务端工程与极简主义哲学的个人数字花园。只记录纯粹的创作与思想。';
+const siteDescription = '服务端工程、开发工具、读书与日常随笔。';
 
 export const GET: APIRoute = async () => {
   const posts = await getPublishedPosts();

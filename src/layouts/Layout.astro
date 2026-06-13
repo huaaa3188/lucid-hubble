@@ -15,7 +15,7 @@ interface Props {
 
 const {
   title,
-  description = "一个关于设计、服务端工程与极简主义哲学的个人数字花园。只记录纯粹的创作与思想。",
+  description = "服务端工程、开发工具、读书与日常随笔。",
   canonicalUrl: canonicalUrlProp,
   ogType = "website",
   publishedTime,
@@ -47,7 +47,7 @@ const jsonLd = structuredData ? JSON.stringify(structuredData).replace(/</g, '\\
   
   <!-- SEO Meta Tags -->
   <meta name="description" content={description}>
-  <meta name="keywords" content="极简博客, 个人数字花园, Astro博客, 极简设计, 静态博客">
+  <meta name="keywords" content="服务端工程, 开发工具, 读书笔记, 日常随笔, Astro博客">
   <meta name="author" content="Lucid">
   <link rel="canonical" href={canonicalUrl}>
   <meta property="og:site_name" content="Lucid Hubble">
@@ -108,7 +108,7 @@ const jsonLd = structuredData ? JSON.stringify(structuredData).replace(/</g, '\\
     <!-- Footer -->
     <footer class="site-footer">
       <div>
-        &copy; 2026 Lucid Hubble. 记录工程、设计与日常思考。
+        &copy; 2026 Lucid Hubble. 记录工程、工具与日常思考。
       </div>
       <div class="footer-socials">
         <a href={githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub">

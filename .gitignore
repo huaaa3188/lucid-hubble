@@ -11,6 +11,9 @@ dist/
 .env
 .env.*
 
+# Local agent instructions
+/AGENTS.md
+
 # System files
 .DS_Store
 Thumbs.db
