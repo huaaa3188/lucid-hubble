@@ -169,10 +169,23 @@ const jsonLd = structuredData ? JSON.stringify(structuredData).replace(/</g, '\\
       updateToggleIcon();
     }
 
+    function updateProgress() {
+      const progressBar = document.getElementById('read-progress');
+      if (!progressBar) return;
+
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = `${scrollPercent}%`;
+    }
+
     // 阅读进度条更新逻辑
     function initProgressBar() {
       const progressBar = document.getElementById('read-progress');
       if (!progressBar) return;
+
+      // 先移除旧监听；updateProgress 是稳定引用，Astro 路由切换后可以正确解绑。
+      window.removeEventListener('scroll', updateProgress);
 
       // 仅在详情页（即包含 <article> 容器的页面）上挂载滚动监听
       const isArticlePage = document.querySelector('article');
@@ -181,17 +194,7 @@ const jsonLd = structuredData ? JSON.stringify(structuredData).replace(/</g, '\\
         return;
       }
 
-      function updateProgress() {
-        const scrollTop = window.scrollY || document.documentElement.scrollTop;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-        if (progressBar) {
-          progressBar.style.width = `${scrollPercent}%`;
-        }
-      }
-
       // 绑定滚动事件，先解绑以防重复绑定
-      window.removeEventListener('scroll', updateProgress);
       window.addEventListener('scroll', updateProgress);
       
       // 初始渲染时执行一次
