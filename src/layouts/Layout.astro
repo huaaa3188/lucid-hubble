@@ -30,7 +30,7 @@ const canonicalPath = pagePath.startsWith(homeUrl) ? pagePath : `${basePath}${pa
 const canonicalUrl = canonicalUrlProp ?? new URL(canonicalPath, Astro.site ?? Astro.url).toString();
 const isAboutPage = canonicalPath.startsWith(aboutUrl);
 const isWritingPage = !isAboutPage;
-const githubUrl = "https://github.com/Huaaa3188";
+const githubUrl = "https://github.com/huaaa3188";
 const rssUrl = getSiteUrl('rss.xml');
 const jsonLd = structuredData ? JSON.stringify(structuredData).replace(/</g, '\\u003c') : undefined;
 ---
